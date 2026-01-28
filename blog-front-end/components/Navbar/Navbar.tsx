@@ -1,0 +1,158 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { FiMenu, FiX, FiSearch } from "react-icons/fi";
+
+type Props = {
+  isLoggedIn?: boolean;
+};
+
+export default function Navbar({ isLoggedIn = false }: Props) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+      <nav className="max-w-7xl mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="text-lg md:text-xl font-semibold text-blue-600"
+          >
+            وبلاگ من
+          </Link>
+
+          {/* Desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            <Link href="/" className="nav-link">
+              خانه
+            </Link>
+            <Link href="/about" className="nav-link">
+              درباره ما
+            </Link>
+            <Link href="/blogs" className="nav-link">
+              بلاگ‌ها
+            </Link>
+            <Link href="/contact" className="nav-link">
+              تماس با ما
+            </Link>
+
+            {/* Search */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="جستجو"
+                className="
+    w-48 px-3 py-2 pr-9
+    text-base md:text-lg
+    border border-gray-300 rounded-md
+    focus:outline-none focus:ring-2 focus:ring-blue-500
+  "
+              />
+              <button
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+                aria-label="search"
+              >
+                <FiSearch />
+              </button>
+            </div>
+
+            {!isLoggedIn && (
+              <Link
+                href="/login"
+                className="
+    px-4 py-2
+    text-base md:text-lg
+    rounded-md
+    bg-blue-600 text-white
+    hover:bg-blue-700 transition
+  "
+              >
+                ورود / ثبت‌نام
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden text-2xl text-gray-700"
+            onClick={() => setMenuOpen(true)}
+            aria-label="open menu"
+          >
+            <FiMenu />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 md:hidden"
+          onClick={closeMenu}
+        >
+          <div
+            className="
+              absolute right-0 top-0 h-full w-72
+              bg-white p-6
+              shadow-xl
+            "
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button className="text-2xl text-gray-700 mb-8" onClick={closeMenu}>
+              <FiX />
+            </button>
+
+            <div className="flex flex-col gap-5">
+              <Link href="/" onClick={closeMenu} className="mobile-link">
+                خانه
+              </Link>
+              <Link href="/about" onClick={closeMenu} className="mobile-link">
+                درباره ما
+              </Link>
+              <Link href="/blogs" onClick={closeMenu} className="mobile-link">
+                بلاگ‌ها
+              </Link>
+              <Link href="/contact" onClick={closeMenu} className="mobile-link">
+                تماس با ما
+              </Link>
+
+              {/* Mobile search */}
+              <div className="relative mt-6">
+                <input
+                  type="text"
+                  placeholder="جستجو"
+                  className="
+                    w-full px-3 py-2 pr-10 text-sm
+                    border border-gray-300 rounded-md
+                    focus:outline-none focus:ring-2 focus:ring-blue-500
+                  "
+                />
+                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  <FiSearch />
+                </button>
+              </div>
+
+              {!isLoggedIn && (
+                <Link
+                  href="/login"
+                  onClick={closeMenu}
+                  className="
+                    mt-4 text-center
+                    px-4 py-2 rounded-md
+                    bg-blue-600 text-white text-sm
+                  "
+                >
+                  ورود / ثبت‌نام
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

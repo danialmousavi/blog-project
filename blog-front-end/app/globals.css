@@ -9,3 +9,9 @@
     font-family: "byekan";
     text-align: right;
 }
+.nav-link {
+  @apply text-base md:text-lg text-gray-600 hover:text-blue-600 transition;
+}
+.mobile-link {
+  @apply text-base font-medium text-gray-700 hover:text-blue-600 transition;
+}
