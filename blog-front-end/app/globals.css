@@ -15,3 +15,14 @@
 .mobile-link {
   @apply text-base font-medium text-gray-700 hover:text-blue-600 transition;
 }
+.active {
+  @apply text-blue-600 font-bold;
+}
+
+.section-title {
+  @apply mb-6 text-2xl md:text-3xl font-bold text-gray-800;
+}
+
+.section-text {
+  @apply max-w-3xl text-gray-600 text-base md:text-lg leading-relaxed;
+}

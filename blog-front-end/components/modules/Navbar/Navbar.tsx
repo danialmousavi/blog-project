@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { FiMenu, FiX, FiSearch } from "react-icons/fi";
 
@@ -10,7 +11,7 @@ type Props = {
 
 export default function Navbar({ isLoggedIn = false }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const pathname=usePathname();
   const closeMenu = () => setMenuOpen(false);
 
   return (
@@ -27,16 +28,16 @@ export default function Navbar({ isLoggedIn = false }: Props) {
 
           {/* Desktop */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/" className="nav-link">
+            <Link href="/" className={`nav-link ${pathname==='/'?'active':''}`}>
               خانه
             </Link>
-            <Link href="/about" className="nav-link">
+            <Link href="/about" className={`nav-link ${pathname==='/about'?'active':''}`}>
               درباره ما
             </Link>
-            <Link href="/blogs" className="nav-link">
+            <Link href="/blogs" className={`nav-link ${pathname==='/blogs'?'active':''}`}>
               بلاگ‌ها
             </Link>
-            <Link href="/contact" className="nav-link">
+            <Link href="/contact" className={`nav-link ${pathname==='/contact'?'active':''}`}>
               تماس با ما
             </Link>
 
@@ -107,16 +108,16 @@ export default function Navbar({ isLoggedIn = false }: Props) {
             </button>
 
             <div className="flex flex-col gap-5">
-              <Link href="/" onClick={closeMenu} className="mobile-link">
+              <Link href="/" onClick={closeMenu} className={`mobile-link ${pathname==='/'?'active':''}`}>
                 خانه
               </Link>
-              <Link href="/about" onClick={closeMenu} className="mobile-link">
+              <Link href="/about" onClick={closeMenu} className={`mobile-link ${pathname==='/about'?'active':''}`}>
                 درباره ما
               </Link>
-              <Link href="/blogs" onClick={closeMenu} className="mobile-link">
+              <Link href="/blogs" onClick={closeMenu} className={`mobile-link ${pathname==='/blogs'?'active':''}`}>
                 بلاگ‌ها
               </Link>
-              <Link href="/contact" onClick={closeMenu} className="mobile-link">
+              <Link href="/contact" onClick={closeMenu} className={`mobile-link ${pathname==='/contact'?'active':''}`}>
                 تماس با ما
               </Link>
 
