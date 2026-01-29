@@ -1,10 +1,15 @@
-import Navbar from "@/components/Navbar/Navbar";
+import BannerSlider from "@/components/modules/BannerSlider/BannerSlider";
+import StatsBar from "@/components/modules/StatsBar/StatsBar";
+import RecentPosts from "@/components/RecentPosts/RecentPosts";
 
 export default function Home() {
   return (
     <>
-      {/* <h1>خوش آمدید به وبلاگ من</h1> */}
-      <Navbar/>
+      <main>
+        <BannerSlider/>
+        <StatsBar/>
+        <RecentPosts/>
+      </main>
     </>
   );
 }
