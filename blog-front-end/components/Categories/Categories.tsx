@@ -1,11 +1,17 @@
 import { GetCategories } from "@/services/CategoriesService";
 import Link from "next/link";
-import React from "react";
-import ValueCard from "../modules/ValueCard/ValueCard";
 import CategoryCard from "../modules/CategoryCard/CategoryCard";
-
+import { FiLayers } from "react-icons/fi";
+// import { CategoryType } from "@/types/Category";
 export default async function Categories() {
-  const categories = await GetCategories();
+  let categories:CategoryType[] = [];
+
+  try {
+    categories = await GetCategories();
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+  }
+
   return (
     <section className="max-w-7xl mx-auto px-4 py-16">
       {/* Header */}
@@ -21,17 +27,29 @@ export default async function Categories() {
         </Link>
       </div>
 
-      {/* Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.slice(0, 3).map((category) => (
-          <CategoryCard
-            key={category.id}
-            id={category.id}
-            title={category.title}
-            text={category.description}
-          />
-        ))}
-      </div>
+      {/* Empty State */}
+      {!categories || categories.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 py-20 text-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+            <FiLayers size={26} />
+          </div>
+          <p className="text-gray-500 text-sm md:text-base">
+            هنوز دسته‌بندی‌ای ایجاد نشده
+          </p>
+        </div>
+      ) : (
+        /* Grid */
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.slice(0, 3).map((category) => (
+            <CategoryCard
+              key={category.id}
+              id={category.id}
+              title={category.title}
+              text={category.description}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

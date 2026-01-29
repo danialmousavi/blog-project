@@ -6,11 +6,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
-      <body>
-            <Navbar/>
-        {children}
-        </body>
-    </html>
+    <>
+      <Navbar />
+      {children}
+    </>
   );
 }
