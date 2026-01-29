@@ -10,7 +10,6 @@ import Image from 'next/image'
 const banners = [
   '/banners/banner-1.jpg',
   '/banners/banner-2.jpg',
-  '/banners/banner-3.jpg',
 ]
 
 export default function BannerSlider() {
