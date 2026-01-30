@@ -7,7 +7,7 @@ type PostCardProps={
   post:ArticleType
 }
 export default function PostCard({ post }:PostCardProps) {
-  
+  const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${post.image}`;
   return (
     <Link
       href={`/blogs/${post.id}`}
@@ -24,7 +24,7 @@ export default function PostCard({ post }:PostCardProps) {
       {/* Image */}
       <div className="relative h-48 w-full">
         <Image
-          src={`${process.env.NEXT_PUBLIC_API_URL}${post.image}`}
+          src={imageUrl}
           alt={post.title}
           fill
           className="object-cover group-hover:scale-105 transition"
