@@ -1,6 +1,6 @@
 import { GetArticles } from "@/services/ArticlesSerivece";
 import { ArticleType } from "@/types/Article";
-import BlogsClient from "./BlogsClient";
+import BlogsClient from "../../../components/modules/BlogsClient/BlogsClient";
 
 export default async function BlogsPage() {
   let posts:ArticleType[] = [];
