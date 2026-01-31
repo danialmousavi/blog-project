@@ -1,6 +1,7 @@
 "use server";
 
 import { loginType, registerType } from "@/types/Auth";
+import { cookies } from "next/headers";
 
 export const AuthRegister = async (values: registerType) => {
   try {
@@ -13,7 +14,7 @@ export const AuthRegister = async (values: registerType) => {
         },
         body: JSON.stringify(values),
         cache: "no-store",
-      }
+      },
     );
 
     // ❌ ارورهای سرور
@@ -50,7 +51,7 @@ export const AuthLogin = async (values: loginType) => {
         },
         body: JSON.stringify(values),
         cache: "no-store",
-      }
+      },
     );
 
     // ❌ ارورهای سرور
@@ -61,12 +62,18 @@ export const AuthLogin = async (values: loginType) => {
         data: null,
       };
     }
-
+    const data = await response.json();
+    const cookieStore = await cookies();
+    cookieStore.set("Token", data.token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60 * 24  //1 day
+    });
     // ✅ موفق
     return {
       success: true,
       message: "شما با موفقیت وارد شدید",
-      data: await response.json(),
+      data: data,
     };
   } catch (error) {
     console.error("Login Error:", error);
@@ -75,7 +82,7 @@ export const AuthLogin = async (values: loginType) => {
     return {
       success: false,
       message: "خطا در ارتباط با سرور",
-        data: null,
+      data: null,
     };
   }
 };
