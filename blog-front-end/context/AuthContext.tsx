@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { createContext } from "vm";
+"use client";
+import { createContext, useState } from "react";
 type usertype = {
   id: string;
   username: string;
@@ -10,7 +10,7 @@ type usertype = {
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (user: usertype) => void;
   logout: () => void;
   user: null | usertype;
 };

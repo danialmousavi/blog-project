@@ -1,8 +1,9 @@
 "use client";
 
+import AuthContext from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FiMenu, FiX, FiSearch } from "react-icons/fi";
 
 type Props = {
@@ -13,7 +14,7 @@ export default function Navbar({ isLoggedIn = false }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname=usePathname();
   const closeMenu = () => setMenuOpen(false);
-
+  const context=useContext(AuthContext);
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <nav className="max-w-7xl mx-auto px-4">
@@ -61,9 +62,9 @@ export default function Navbar({ isLoggedIn = false }: Props) {
               </button>
             </div>
 
-            {!isLoggedIn && (
+            {!context.isAuthenticated? (
               <Link
-                href="/login"
+                href="/auth/login"
                 className="
     px-4 py-2
     text-base md:text-lg
@@ -74,6 +75,8 @@ export default function Navbar({ isLoggedIn = false }: Props) {
               >
                 ورود / ثبت‌نام
               </Link>
+            ):(
+              <span className="text-gray-700">خوش آمدید، {context.user?.username}</span>
             )}
           </div>
 
@@ -137,18 +140,25 @@ export default function Navbar({ isLoggedIn = false }: Props) {
                 </button>
               </div>
 
-              {!isLoggedIn && (
+              {!context.isAuthenticated? (
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   onClick={closeMenu}
+
                   className="
-                    mt-4 text-center
-                    px-4 py-2 rounded-md
-                    bg-blue-600 text-white text-sm
+                    block w-full text-center
+                    px-4 py-2
+                    text-sm
+                    rounded-md
+                    bg-blue-600 text-white
+                    hover:bg-blue-700 transition
                   "
                 >
                   ورود / ثبت‌نام
+
                 </Link>
+              ):(
+                <span className="text-gray-700">خوش آمدید، {context.user?.username}</span>
               )}
             </div>
           </div>

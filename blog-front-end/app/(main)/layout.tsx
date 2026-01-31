@@ -1,5 +1,6 @@
 import Footer from "@/components/modules/Footer/Footer";
 import Navbar from "@/components/modules/Navbar/Navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function MainLayout({
   children,
@@ -8,9 +9,11 @@ export default function MainLayout({
 }>) {
   return (
     <>
-      <Navbar />
-      {children}
-      <Footer/>
+      <AuthProvider>
+        <Navbar />
+        {children}
+        <Footer />
+      </AuthProvider>
     </>
   );
 }
