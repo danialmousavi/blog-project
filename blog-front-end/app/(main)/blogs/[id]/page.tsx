@@ -56,7 +56,7 @@ export default async function SingleArticlePage({
       </div>
 
         <RelatedArticles relatedArticles={relatedArticles} />
-        <ArticleCommentSection/>
+        <ArticleCommentSection id={article.id} />
     </main>
   );
 }
