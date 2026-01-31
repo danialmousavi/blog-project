@@ -1,3 +1,4 @@
+"use server"
 import { ArticleType } from "@/types/Article";
 
 export const GetCategories = async () => {

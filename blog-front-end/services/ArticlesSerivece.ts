@@ -1,3 +1,4 @@
+"use server"
 import { ArticleType } from "@/types/Article"
 import { Articlecomment } from "@/types/Comment";
 

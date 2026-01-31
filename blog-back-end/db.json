@@ -118,6 +118,14 @@
       "password": "$2b$10$RoBbLja/WDXK3em2Pudv9.fmJrtGN3AoAAYliqzVecjRDHx64JPsC",
       "role": "user",
       "createdAt": "2025-05-29T16:45:13.946Z"
+    },
+    {
+      "id": "s0-cv6nCbB",
+      "username": "daniuf",
+      "email": "danial@gmail.com",
+      "password": "$2b$10$4EZdCwhz4GcMV8mDrkej3eq/3nJt5aTzVsSsRU8GkqQQvlwsfwwCy",
+      "role": "user",
+      "createdAt": "2026-01-31T19:07:31.224Z"
     }
   ]
 }
