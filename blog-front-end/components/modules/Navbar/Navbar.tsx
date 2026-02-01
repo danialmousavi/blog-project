@@ -1,10 +1,12 @@
 "use client";
 
 import AuthContext from "@/context/AuthContext";
+import { AuthLogout } from "@/services/AuthService";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext, useState } from "react";
 import { FiMenu, FiX, FiSearch } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 type Props = {
   isLoggedIn?: boolean;
@@ -15,6 +17,12 @@ export default function Navbar({ isLoggedIn = false }: Props) {
   const pathname=usePathname();
   const closeMenu = () => setMenuOpen(false);
   const context=useContext(AuthContext);
+
+  const handleLogout=async ()=>{
+    context.logout();
+    await AuthLogout();
+    toast.success("شما با موفقیت از حساب خود خارج شدید")
+  }
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <nav className="max-w-7xl mx-auto px-4">
@@ -76,11 +84,13 @@ export default function Navbar({ isLoggedIn = false }: Props) {
                 ورود / ثبت‌نام
               </Link>
             ):(
-              <button className="    px-4 py-2
+              <button   onClick={()=>handleLogout()} className="    px-4 py-2
     text-base md:text-lg
     rounded-md
-    bg-red-600 text-white
-    hover:bg-red-700 transition">
+    bg-blue-600 text-white
+    hover:bg-blue-700 transition"
+  
+    >
                 خروج از حساب ({context.user?.username})
               </button>
             )}
