@@ -76,7 +76,13 @@ export default function Navbar({ isLoggedIn = false }: Props) {
                 ورود / ثبت‌نام
               </Link>
             ):(
-              <span className="text-gray-700">خوش آمدید، {context.user?.username}</span>
+              <button className="    px-4 py-2
+    text-base md:text-lg
+    rounded-md
+    bg-red-600 text-white
+    hover:bg-red-700 transition">
+                خروج از حساب ({context.user?.username})
+              </button>
             )}
           </div>
 

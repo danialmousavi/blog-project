@@ -34,3 +34,4 @@ export const GetArticleComments=async(articleId:string)=>{
     const data:Articlecomment[]=await response.json();
     return data;
 }
+

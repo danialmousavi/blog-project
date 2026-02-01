@@ -8,6 +8,7 @@ import { AuthLogin } from "@/services/AuthService";
 import { toast } from "react-toastify";
 import { useContext } from "react";
 import AuthContext from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 type LoginFormValues = {
   username: string;
@@ -21,7 +22,8 @@ const initialValues: LoginFormValues = {
 
 export default function LoginPage() {
   const context=useContext(AuthContext);
-  const handleSubmit = async (values: LoginFormValues,{ setSubmitting }: any,) => {
+  const router=useRouter()
+  const handleSubmit = async (values: LoginFormValues,{ setSubmitting, resetForm }: any,) => {
     try {
       console.log(values);
       const result=await AuthLogin(values);
@@ -31,6 +33,8 @@ export default function LoginPage() {
         // Login successful
         toast.success(result.message);
         context.login(result.data.user);
+        resetForm();
+        router.replace("/")
       } else {
         // Login failed
         toast.error(result.message);

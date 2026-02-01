@@ -5,4 +5,8 @@ type Articlecomment = {
   author: string;
   createdAt: string;
 };
-export type {Articlecomment};
+type CreateComment = {
+  content:string,
+  articleId:string
+}
+export type {Articlecomment,CreateComment};

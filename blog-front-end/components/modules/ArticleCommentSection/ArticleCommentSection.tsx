@@ -1,6 +1,9 @@
 import { GetArticleComments } from '@/services/ArticlesSerivece'
 import { Articlecomment } from '@/types/Comment'
 import React from 'react'
+import { formatDate } from '../FormData/FormDate'
+import { Formik } from 'formik'
+import AddComment from './AddComment'
 
 type ArticleCommentSectionProps = {
   id: string
@@ -28,13 +31,8 @@ export default async function ArticleCommentSection({
 
       {/* ===== Add Comment (UI Only) ===== */}
       <div className="bg-white border rounded-2xl p-6 mb-10 shadow-lg transition hover:shadow-xl">
-        <textarea
-          placeholder="نظر خود را بنویسید..."
-          className="w-full min-h-[120px] border rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl transition">
-          ارسال نظر
-        </button>
+
+        <AddComment id={id}/>
       </div>
 
       {/* ===== Comment List ===== */}
@@ -51,7 +49,7 @@ export default async function ArticleCommentSection({
                 </span>
                 <span className="text-sm text-gray-500">
                   {/* تاریخ رو بعداً خودت وصل کن */}
-                  چند لحظه پیش
+                  {formatDate(item.createdAt)}
                 </span>
               </div>
 
