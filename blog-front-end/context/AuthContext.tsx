@@ -1,5 +1,6 @@
 "use client";
-import { createContext, useState } from "react";
+import { AuthUserProfile } from "@/services/AuthService";
+import { createContext, useEffect, useState } from "react";
 type usertype = {
   id: string;
   username: string;
@@ -18,9 +19,28 @@ type AuthContextType = {
 const AuthContext = createContext({} as AuthContextType);
 export default AuthContext;
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider =  ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<usertype | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const result = await AuthUserProfile()
+      console.log("test user profile",result);
+      
+      if (result) {
+        setUser(result)
+        setIsAuthenticated(true)
+      }
+    } catch (error) {
+      setUser(null)
+      setIsAuthenticated(false)
+    }
+  }
+
+  fetchUser()
+}, [])
+
   const login = (user: usertype) => {
     // Logic to authenticate user and set user state
     setUser(user);

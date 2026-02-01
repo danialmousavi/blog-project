@@ -86,3 +86,33 @@ export const AuthLogin = async (values: loginType) => {
     };
   }
 };
+export const AuthUserProfile=async()=>{
+    try {
+        const cookieStore=await cookies();
+        const token=cookieStore.get("Token")?.value;
+        if(!token){
+            return null;
+        }
+        const response=await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`,{
+            method:"GET", 
+            headers:{
+                "Authorization":`Bearer ${token}`
+            },
+            cache:"no-store"
+        });
+        if(!response.ok){
+          cookieStore.delete("Token");
+            return null;
+        }
+        const data=await response.json();
+        
+        return data;
+    } catch (error) {
+        console.error("Auth User Profile Error:",error);
+        return null;
+    }
+}
+export const AuthLogout=async()=>{
+    const cookieStore=await cookies();
+    cookieStore.delete("Token");
+}
