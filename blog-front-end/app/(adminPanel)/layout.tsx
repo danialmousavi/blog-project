@@ -1,3 +1,4 @@
+import AdminNavbar from "@/components/AdminPanel/AdminNavbar/AdminNavbar";
 import ToastProvider from "@/components/modules/providers/ToastProvider";
 
 export default function AdminPanelLayout({
@@ -7,6 +8,7 @@ export default function AdminPanelLayout({
 }>) {
   return (
     <>
+    <AdminNavbar/>
       {children}
       <ToastProvider />
     </>
