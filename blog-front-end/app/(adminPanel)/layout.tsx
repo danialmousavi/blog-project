@@ -1,5 +1,6 @@
 import Navbar from "@/components/AdminPanel/AdminNavbar/AdminNavbar";
 import Sidebar from "@/components/AdminPanel/Sidebar/Sidebar";
+import ToastProvider from "@/components/modules/providers/ToastProvider";
 import { ReactNode } from "react";
 
 interface DashboardLayoutProps {
@@ -14,7 +15,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar />
       <div className="flex-1 min-h-screen md:pr-64">
         <Navbar />
-        <main className="pt-16 p-4">{children}</main>
+        <main className="pt-16 p-4">
+          {children}
+          <ToastProvider />
+        </main>
       </div>
     </div>
   );
