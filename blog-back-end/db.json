@@ -140,7 +140,7 @@
       "username": "kimia",
       "email": "kimia@gmail.com",
       "password": "$2b$10$N2VSB3yo.VxtzLnGgLWd0uXT4if1tQ7QxL1XJ3EYFpZPFdrhv70YS",
-      "role": "user",
+      "role": "admin",
       "createdAt": "2026-02-03T12:06:55.737Z"
     }
   ]
