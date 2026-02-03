@@ -76,3 +76,38 @@ export const CreateUser = async (values: registerType) => {
     };
   }
 };
+export const DeleteUser = async (userId: string) => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("Token")?.value;
+    if (!token) {
+        return {
+            success: false,
+            message: "کاربر احراز هویت نشده است"
+        }
+    }
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/users/${userId}`, {
+            method: "DELETE",   
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            return {
+                success: false,
+                message: "خطا در حذف کاربر"
+            }
+        }
+        revalidatePath("/p-admin/users");
+        return {
+            success: true,
+            message: "کاربر با موفقیت حذف شد"
+        }
+    } catch (error) {
+        console.error("Delete User Error:", error);
+        return {
+            success: false,
+            message: "خطا در ارتباط با سرور"
+        }
+    }
+}

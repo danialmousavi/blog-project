@@ -142,14 +142,6 @@
       "password": "$2b$10$N2VSB3yo.VxtzLnGgLWd0uXT4if1tQ7QxL1XJ3EYFpZPFdrhv70YS",
       "role": "user",
       "createdAt": "2026-02-03T12:06:55.737Z"
-    },
-    {
-      "id": "DwJ-xxDjY7",
-      "username": "negara",
-      "email": "negara@gmail.com",
-      "password": "$2b$10$YIfnc9LEQxhf.iNMf6cgj.q/b0irXxwDENWiXyeIcHVQlTja7ejMW",
-      "role": "user",
-      "createdAt": "2026-02-03T12:16:52.686Z"
     }
   ]
 }

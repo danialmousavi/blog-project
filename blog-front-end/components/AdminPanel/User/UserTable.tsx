@@ -6,10 +6,20 @@ import {
   FiEye,
 } from "react-icons/fi";
 import { UserType } from '@/types/Users';
+import { DeleteUser } from '@/services/Users';
+import { toast } from 'react-toastify';
 type UserTableProps={
     users: UserType[]
 }
 export default function UserTable({users}:UserTableProps) {
+    const handleDeleteUser=async(userId:string)=>{
+        const result=await DeleteUser(userId);
+        if(result.success){
+            toast.success(result.message);
+        }else{ 
+            toast.error(result.message);
+        }
+    }
   return (
    <>
          <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
@@ -68,6 +78,7 @@ export default function UserTable({users}:UserTableProps) {
                     <button
                       title="حذف"
                       className="rounded-lg p-2 text-red-600 hover:bg-red-100 transition"
+                      onClick={()=>handleDeleteUser(user.id)}
                     >
                       <FiTrash2 size={18} />
                     </button>
