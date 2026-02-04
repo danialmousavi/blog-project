@@ -11,9 +11,9 @@ export default function Sidebar() {
   const menuItems = [
     { name: "داشبورد", href: "/p-admin" },
     { name: "کاربران", href: "/p-admin/users" },
-    { name: "پست‌ها", href: "/p-admin/posts" },
-    { name: "آمار", href: "/p-admin/analytics" },
-    { name: "گزارش‌ها", href: "/p-admin/reports" },
+    { name: "دسته بندی ها", href: "/p-admin/categories" },
+    { name: "کامنت ها", href: "/p-admin/comments" },
+    { name: "مقالات", href: "/p-admin/articles" },
     { name: "تنظیمات", href: "/p-admin/settings" },
   ];
 

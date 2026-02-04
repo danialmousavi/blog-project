@@ -1,5 +1,8 @@
-"use server"
+"use server";
 import { ArticleType } from "@/types/Article";
+import { CategoryType, CreateCategoryType } from "@/types/Category";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 export const GetCategories = async () => {
   const response = await fetch(
@@ -16,7 +19,7 @@ export const GetCategories = async () => {
   const data: CategoryType[] = await response.json();
   return data;
 };
-export const GetCategoryArticles= async (catId:string) => {
+export const GetCategoryArticles = async (catId: string) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/categories/${catId}/articles`,
     {
@@ -26,8 +29,56 @@ export const GetCategoryArticles= async (catId:string) => {
     },
   );
   if (!response.ok) {
-    throw new Error(`Failed to fetch category articles: ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch category articles: ${response.statusText}`,
+    );
   }
   const data: ArticleType[] = await response.json();
   return data;
-}
+};
+export const CreateCategory = async (values: CreateCategoryType) => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("Token")?.value;
+    if (!token) {
+      return {
+        success: false,
+        message: "برای ایجاد دسته بندی جدید باید احراز شوید",
+        data: null,
+      };
+    }
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(values),
+      },
+    );
+    console.log(response);
+    
+    if (!response.ok) {
+      return {
+        success: false,
+        message: `مشکلی پیش آمده ${response.statusText}`,
+        data: null,
+      };
+    }
+    const data = await response.json();
+    revalidatePath("/p-admin/categories")
+    return {
+      success: true,
+      message: `دسته بندی جدید با موفقیت اضافه شد`,
+      data: data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: `خطا لطفا بعدا امتحان کنید`,
+      data: null,
+    };
+  }
+};

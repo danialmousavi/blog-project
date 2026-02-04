@@ -2,6 +2,7 @@ import { GetCategories } from "@/services/CategoriesService";
 import Link from "next/link";
 import CategoryCard from "../modules/CategoryCard/CategoryCard";
 import { FiLayers } from "react-icons/fi";
+import { CategoryType } from "@/types/Category";
 // import { CategoryType } from "@/types/Category";
 export default async function Categories() {
   let categories:CategoryType[] = [];
