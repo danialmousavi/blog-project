@@ -2,12 +2,22 @@
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 import { CategoryType } from "@/types/Category";
+import { DeleteCategory } from "@/services/CategoriesService";
+import { toast } from "react-toastify";
 
 type CategoryTableProps = {
   categories: CategoryType[];
 };
 
 export default function CategoryTable({ categories }: CategoryTableProps) {
+    const handleDeleteCategory=async(catId:string)=>{
+        const result=await DeleteCategory(catId);
+        if(result.success){
+            toast.success(result.message)
+        }else{
+            toast.error(result.message)
+        }
+    }
   return (
     <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
       <table className="w-full text-right">
@@ -48,6 +58,7 @@ export default function CategoryTable({ categories }: CategoryTableProps) {
                       className="rounded-lg p-2 transition
                       disabled:opacity-50 disabled:cursor-not-allowed
                       text-red-600 hover:bg-red-100"
+                      onClick={()=>handleDeleteCategory(category.id)}
                     >
                       <FiTrash2 size={18} />
                     </button>
