@@ -55,7 +55,7 @@ export const GetAllComments = async () => {
         },
       },
     );
-    console.log("response",response);
+    // console.log("response",response);
     
     if (!response.ok) {
       return {

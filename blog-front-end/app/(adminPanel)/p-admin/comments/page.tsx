@@ -1,4 +1,5 @@
 import CommentsTable from "@/components/AdminPanel/Comment/CommentsTable";
+import { GetArticles } from "@/services/ArticlesSerivece";
 import { GetAllComments } from "@/services/Comments";
 import Link from "next/link";
 import React from "react";
@@ -6,6 +7,9 @@ import { FiPlus, FiUsers } from "react-icons/fi";
 
 export default async function page() {
   const comments = await GetAllComments();
+  const articles=await GetArticles();
+  console.log(articles);
+  
   console.log(comments);
   return (
     <div className="p-6 space-y-6">
@@ -17,7 +21,7 @@ export default async function page() {
         </div>
       </div>
 
-      <CommentsTable comments={comments.data} />
+      <CommentsTable comments={comments.data} articles={articles} />
     </div>
   );
 }

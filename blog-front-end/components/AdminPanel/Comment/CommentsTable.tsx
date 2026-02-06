@@ -1,18 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatDate } from "@/components/modules/FormData/FormDate";
 import { Articlecomment } from "@/types/Comment";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
 import CommentModal from "./CommentModal";
+import { ArticleType } from "@/types/Article";
 
 type CommentsTableProps = {
   comments: Articlecomment[];
+  articles: ArticleType[];
 };
 
-export default function CommentsTable({ comments }: CommentsTableProps) {
+export default function CommentsTable({
+  comments,
+  articles,
+}: CommentsTableProps) {
   const [selectedComment, setSelectedComment] =
     useState<Articlecomment | null>(null);
+
+  const articleMap = useMemo(() => {
+    return new Map(
+      articles.map((article) => [article.id, article.title])
+    );
+  }, [articles]);
 
   return (
     <>
@@ -24,7 +35,9 @@ export default function CommentsTable({ comments }: CommentsTableProps) {
               <th className="px-6 py-4 font-semibold">نویسنده</th>
               <th className="px-6 py-4 font-semibold">محتوا</th>
               <th className="px-6 py-4 font-semibold">تاریخ</th>
-              <th className="px-6 py-4 font-semibold text-center">عملیات</th>
+              <th className="px-6 py-4 font-semibold text-center">
+                عملیات
+              </th>
             </tr>
           </thead>
 
@@ -35,7 +48,7 @@ export default function CommentsTable({ comments }: CommentsTableProps) {
                 className="text-sm transition hover:bg-blue-50/50"
               >
                 <td className="px-6 py-4 font-medium text-gray-800">
-                  {comment.articleId}
+                  {articleMap.get(comment.articleId) ?? "نامشخص"}
                 </td>
 
                 <td className="px-6 py-4 text-gray-600">
@@ -45,7 +58,7 @@ export default function CommentsTable({ comments }: CommentsTableProps) {
                 <td className="px-6 py-4">
                   <button
                     onClick={() => setSelectedComment(comment)}
-                    className="rounded-xl bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
+                    className="rounded-xl bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
                   >
                     مشاهده کامنت
                   </button>
@@ -57,9 +70,7 @@ export default function CommentsTable({ comments }: CommentsTableProps) {
 
                 <td className="px-6 py-4">
                   <div className="flex justify-center gap-3">
-   
-
-                    <button className="rounded-lg p-2 text-red-600 hover:bg-red-100 transition">
+                    <button className="rounded-lg p-2 text-red-600 transition hover:bg-red-100">
                       <FiTrash2 size={18} />
                     </button>
                   </div>
