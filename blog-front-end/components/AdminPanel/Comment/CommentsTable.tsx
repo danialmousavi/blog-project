@@ -6,16 +6,15 @@ import { Articlecomment } from "@/types/Comment";
 import { FiTrash2 } from "react-icons/fi";
 import CommentModal from "./CommentModal";
 import { ArticleType } from "@/types/Article";
+import { DeleteComment } from "@/services/Comments";
+import { toast } from "react-toastify";
 
 type CommentsTableProps = {
   comments: Articlecomment[];
   articles: ArticleType[];
 };
 
-export default function CommentsTable({
-  comments,
-  articles,
-}: CommentsTableProps) {
+export default function CommentsTable({comments,articles,}: CommentsTableProps) {
   const [selectedComment, setSelectedComment] =
     useState<Articlecomment | null>(null);
 
@@ -24,7 +23,14 @@ export default function CommentsTable({
       articles.map((article) => [article.id, article.title])
     );
   }, [articles]);
-
+  const handleDeleteComment=async(id:string)=>{
+    const result=await DeleteComment(id);
+    if(result.message){
+      toast.success(result.message)
+    }else{
+      toast.error(result.message)
+    }
+  }
   return (
     <>
       <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
@@ -70,7 +76,7 @@ export default function CommentsTable({
 
                 <td className="px-6 py-4">
                   <div className="flex justify-center gap-3">
-                    <button className="rounded-lg p-2 text-red-600 transition hover:bg-red-100">
+                    <button className="rounded-lg p-2 text-red-600 transition hover:bg-red-100" onClick={()=>handleDeleteComment(comment.id)}>
                       <FiTrash2 size={18} />
                     </button>
                   </div>

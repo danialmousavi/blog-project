@@ -78,3 +78,38 @@ export const GetAllComments = async () => {
     };
   }
 };
+export const DeleteComment = async (CommentId: string) => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("Token")?.value;
+    if (!token) {
+        return {
+            success: false,
+            message: "کاربر احراز هویت نشده است"
+        }
+    }
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/comments/${CommentId}`, {
+            method: "DELETE",   
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            return {
+                success: false,
+                message: "خطا در حذف کامنت"
+            }
+        }
+        revalidatePath("/p-admin/comments");
+        return {
+            success: true,
+            message: "کامنت با موفقیت حذف شد"
+        }
+    } catch (error) {
+        console.error("Delete User Error:", error);
+        return {
+            success: false,
+            message: "خطا در ارتباط با سرور"
+        }
+    }
+}
