@@ -6,6 +6,8 @@ import { ArticleType } from "@/types/Article";
 import { CategoryType } from "@/types/Category";
 import { FiEye, FiTrash2 } from "react-icons/fi";
 import ArticleModal from "./ArticleModal"
+import { DeleteArticle } from "@/services/ArticlesSerivece";
+import { toast } from "react-toastify";
 
 type ArticleTableProps = {
   articles: ArticleType[];
@@ -24,6 +26,16 @@ export default function ArticleTable({
     return new Map(categories.map((cat) => [cat.id, cat.title]));
   }, [categories]);
 
+
+  //delete article
+  const handleDeleteArticle= async(articleId:string)=>{
+    const result=await DeleteArticle(articleId);
+    if(result.success){
+      toast.success(result.message);
+    } else{
+      toast.error(result.message);
+    }
+  }
   return (
     <>
       <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
@@ -78,6 +90,7 @@ export default function ArticleTable({
                     <button
                       className="rounded-lg p-2 text-red-600 transition hover:bg-red-100"
                       title="حذف مقاله"
+                      onClick={()=>handleDeleteArticle(article.id)}
                     >
                       <FiTrash2 size={18} />
                     </button>

@@ -1,6 +1,8 @@
 "use server"
 import { ArticleType } from "@/types/Article"
 import { Articlecomment } from "@/types/Comment";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 export const GetArticles=async()=>{
     const response=await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`,{
@@ -35,3 +37,37 @@ export const GetArticleComments=async(articleId:string)=>{
     return data;
 }
 
+export const DeleteArticle=async (id:string)=>{
+    try {
+        const cookiesStore=await cookies();
+        const token=cookiesStore.get("Token")?.value;
+        if(!token){
+            return{
+                success:false,
+                message:"شما اجازه حذف مقاله را ندارید"
+            }
+        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) {
+            return{
+                success:false,
+                message:`خطا در حذف مقاله: ${response.statusText}`
+            }
+        }
+        revalidatePath("/p-admin/articles");
+        return{
+            success:true,
+            message:"مقاله با موفقیت حذف شد"
+        }
+    } catch (error) {
+        return{
+            success:false,
+            message:`خطا در حذف مقاله: ${error instanceof Error ? error.message : 'Unknown error'}`
+        }
+    }
+}
