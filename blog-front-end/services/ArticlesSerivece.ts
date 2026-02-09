@@ -71,3 +71,41 @@ export const DeleteArticle=async (id:string)=>{
         }
     }
 }
+
+export const CreateArticle=async(formData:FormData)=>{ 
+    try {
+        const cookiesStore=await cookies();
+        const token=cookiesStore.get("Token")?.value;
+        if(!token){
+            return{
+                success:false,
+                message:"شما اجازه ایجاد مقاله را ندارید"
+            }
+        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/with-image`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },  
+            body: formData,
+        });
+        console.log(" create article response",response);
+        
+        if (!response.ok) {
+            return{
+                success:false,
+                message:`خطا در ایجاد مقاله: ${response.statusText}`,
+            }
+        }
+        revalidatePath("/p-admin/articles");
+        return{
+            success:true,
+            message:"مقاله با موفقیت ایجاد شد"
+        }
+    } catch (error) {
+        return{
+            success:false,
+            message:`خطا در ایجاد مقاله: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        }
+    }
+}

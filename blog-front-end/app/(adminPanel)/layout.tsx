@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Navbar from "@/components/AdminPanel/AdminNavbar/AdminNavbar";
 import Sidebar from "@/components/AdminPanel/Sidebar/Sidebar";
 import ToastProvider from "@/components/modules/providers/ToastProvider";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const dynamic = "force-dynamic"; // مهم 👈
 
@@ -12,7 +13,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore =  await cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("Token")?.value;
 
   if (!token) {
@@ -26,7 +27,7 @@ export default async function DashboardLayout({
         Authorization: `Bearer ${token}`,
       },
       cache: "no-store", // مهم 👈
-    }
+    },
   );
 
   if (!response.ok) {
@@ -46,7 +47,7 @@ export default async function DashboardLayout({
       <div className="flex-1 min-h-screen md:pr-64">
         <Navbar />
         <main className="pt-16 p-4">
-          {children}
+          <AuthProvider>{children}</AuthProvider>
           <ToastProvider />
         </main>
       </div>

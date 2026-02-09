@@ -20,7 +20,7 @@ export default async function page() {
         </div>
 
         <Link
-          href="/p-admin/users/create"
+          href="/p-admin/articles/create"
           className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 transition"
         >
           <FiPlus />
