@@ -2,6 +2,7 @@
 
 import { FiX } from "react-icons/fi";
 import { ArticleType } from "@/types/Article";
+import Image from "next/image";
 
 type ArticleModalProps = {
   isOpen: boolean;
@@ -42,6 +43,13 @@ export default function ArticleModal({
 
         {/* Content */}
         <div className="max-h-[60vh] overflow-y-auto leading-8 text-gray-700">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_API_URL}${article.image}`}
+            alt={article.title}
+            width={800}
+            height={400}
+            className="mb-6 w-full rounded-lg object-cover"
+          />
           {article.content}
         </div>
 
