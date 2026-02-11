@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import { formatDate } from "@/components/modules/FormData/FormDate";
 import { ArticleType } from "@/types/Article";
 import { CategoryType } from "@/types/Category";
-import { FiEye, FiTrash2 } from "react-icons/fi";
-import ArticleModal from "./ArticleModal"
+import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
+import ArticleModal from "./ArticleModal";
 import { DeleteArticle } from "@/services/ArticlesSerivece";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 type ArticleTableProps = {
   articles: ArticleType[];
@@ -18,24 +19,24 @@ export default function ArticleTable({
   articles,
   categories,
 }: ArticleTableProps) {
-  const [selectedArticle, setSelectedArticle] =
-    useState<ArticleType | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<ArticleType | null>(
+    null,
+  );
 
   // ✅ Map برای دسته‌بندی‌ها
   const categoryMap = useMemo(() => {
     return new Map(categories.map((cat) => [cat.id, cat.title]));
   }, [categories]);
 
-
   //delete article
-  const handleDeleteArticle= async(articleId:string)=>{
-    const result=await DeleteArticle(articleId);
-    if(result.success){
+  const handleDeleteArticle = async (articleId: string) => {
+    const result = await DeleteArticle(articleId);
+    if (result.success) {
       toast.success(result.message);
-    } else{
+    } else {
       toast.error(result.message);
     }
-  }
+  };
   return (
     <>
       <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
@@ -62,9 +63,7 @@ export default function ArticleTable({
                 </td>
 
                 {/* Author */}
-                <td className="px-6 py-4 text-gray-600">
-                  {article.author}
-                </td>
+                <td className="px-6 py-4 text-gray-600">{article.author}</td>
 
                 {/* Category */}
                 <td className="px-6 py-4 text-gray-600">
@@ -90,10 +89,17 @@ export default function ArticleTable({
                     <button
                       className="rounded-lg p-2 text-red-600 transition hover:bg-red-100"
                       title="حذف مقاله"
-                      onClick={()=>handleDeleteArticle(article.id)}
+                      onClick={() => handleDeleteArticle(article.id)}
                     >
                       <FiTrash2 size={18} />
                     </button>
+                    <Link
+                      href={`/p-admin/articles/edit/${article.id}`}
+                      className="rounded-lg p-2 text-green-600 transition hover:bg-red-100"
+                      title="ادیت مقاله"
+                    >
+                      <FiEdit size={18} />
+                    </Link>
                   </div>
                 </td>
               </tr>

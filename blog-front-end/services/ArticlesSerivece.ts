@@ -16,8 +16,9 @@ export const GetArticles=async()=>{
 }
 export const GetArticleById=async(id:string)=>{
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${id}`, {
-        next: { revalidate: 60*60*6 },// Revalidate every 6 hours
+       cache:"no-cache"
     });
+    console.log(response);
     
     if (!response.ok) {
         return false
@@ -108,4 +109,12 @@ export const CreateArticle=async(formData:FormData)=>{
             message:`خطا در ایجاد مقاله: ${error instanceof Error ? error.message : 'Unknown error'}`,
         }
     }
+}
+export const EditArticle =async(articleId:string,formData:FormData)=>{
+    console.log("formData",formData);
+    
+}
+export const EditArticleWithImage =async(articleId:string,formData:FormData)=>{
+    console.log("formData",formData);
+    
 }
