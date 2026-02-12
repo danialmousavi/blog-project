@@ -6,7 +6,10 @@ import { useRouter } from "next/navigation";
 import AuthContext from "@/context/AuthContext";
 import { CategoryType } from "@/types/Category";
 import { toast } from "react-toastify";
-import { CreateArticleSchema, EditArticleSchema } from "@/services/schemas/ArticleSchema";
+import {
+  EditArticleSchema,
+} from "@/services/schemas/ArticleSchema";
+import { EditArticle, EditArticleWithImage } from "@/services/ArticlesSerivece";
 
 type EditArticlePageProps = {
   categories: CategoryType[];
@@ -26,7 +29,7 @@ export default function EditArticlePage({
   useEffect(() => {
     const fetchArticle = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/articles/${articleId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/articles/${articleId}`,
       );
       const data = await res.json();
       setArticleData(data);
@@ -41,9 +44,7 @@ export default function EditArticlePage({
 
   return (
     <div className="w-full max-w-3xl rounded-2xl bg-white p-8 shadow-xl">
-      <h1 className="mb-8 text-2xl font-bold text-gray-900">
-        ویرایش مقاله
-      </h1>
+      <h1 className="mb-8 text-2xl font-bold text-gray-900">ویرایش مقاله</h1>
 
       <Formik
         enableReinitialize
@@ -65,21 +66,29 @@ export default function EditArticlePage({
               formData.append("author", user?.username ?? "admin");
               formData.append("image", values.image);
 
-                console.log(formData);
-                
+              console.log(formData);
+              const result = await EditArticleWithImage(articleId, formData);
+              if (result.success) {
+                toast.success(result.message || "مقاله با موفقیت ویرایش شد");
+              } else {
+                toast.error(result.message || "مشکلی پیش آمده ");
+              }
             } else {
-              // 🔵 اگر فقط متن تغییر کرده
-                console.log({
-                    title: values.title,
-                    content: values.content,
-                    categoryId: values.categoryId,
-                    author: user?.username ?? "admin",
-                    image: articleData.image, // 👈 تصویر قبلی رو نگه میداریم
-                  });
-                
+              // اگر فقط متن تغییر کرده
+              const result = await EditArticle(articleId, {
+                title: values.title,
+                content: values.content,
+                categoryId: values.categoryId,
+                author: user?.username ?? "admin",
+                image: articleData.image, // 👈 تصویر قبلی رو نگه میداریم
+              });
+              if (result.success) {
+                toast.success(result.message || "مقاله با موفقیت ویرایش شد");
+              } else {
+                toast.error(result.message || "مشکلی پیش آمده ");
+              }
             }
 
-            toast.success("مقاله با موفقیت ویرایش شد");
             router.push("/p-admin/articles");
           } catch (error) {
             toast.error("خطا در ویرایش مقاله");

@@ -7,3 +7,10 @@ export type ArticleType = {
   author: string;
   createdAt: string;
 };
+export type UpdateArticleType = {
+  title: string;
+  content: string;
+  image: string;
+  categoryId: string;
+  author: string;
+};
