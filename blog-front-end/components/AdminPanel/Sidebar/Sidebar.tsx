@@ -1,8 +1,11 @@
 "use client";
 
+import AuthContext from "@/context/AuthContext";
+import { AuthLogout } from "@/services/AuthService";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -14,9 +17,14 @@ export default function Sidebar() {
     { name: "دسته بندی ها", href: "/p-admin/categories" },
     { name: "کامنت ها", href: "/p-admin/comments" },
     { name: "مقالات", href: "/p-admin/articles" },
-    { name: "تنظیمات", href: "/p-admin/settings" },
   ];
+  const context = useContext(AuthContext);
 
+  const handleLogout = async () => {
+    context.logout();
+    await AuthLogout();
+    toast.success("شما با موفقیت از حساب خود خارج شدید");
+  };
   return (
     <>
       <button
@@ -58,6 +66,12 @@ export default function Sidebar() {
                   </li>
                 );
               })}
+              <li
+                onClick={() => handleLogout()}
+                className={`block text-right w-full text-gray-700 hover:bg-blue-50 rounded-lg px-3 py-2 text-sm font-medium mt-3 transition`}
+              >
+                خروج
+              </li>
             </ul>
           </nav>
         </div>

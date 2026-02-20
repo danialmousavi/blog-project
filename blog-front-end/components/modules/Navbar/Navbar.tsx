@@ -14,15 +14,15 @@ type Props = {
 
 export default function Navbar({ isLoggedIn = false }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname=usePathname();
+  const pathname = usePathname();
   const closeMenu = () => setMenuOpen(false);
-  const context=useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-  const handleLogout=async ()=>{
+  const handleLogout = async () => {
     context.logout();
     await AuthLogout();
-    toast.success("شما با موفقیت از حساب خود خارج شدید")
-  }
+    toast.success("شما با موفقیت از حساب خود خارج شدید");
+  };
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <nav className="max-w-7xl mx-auto px-4">
@@ -37,16 +37,28 @@ export default function Navbar({ isLoggedIn = false }: Props) {
 
           {/* Desktop */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/" className={`nav-link ${pathname==='/'?'active':''}`}>
+            <Link
+              href="/"
+              className={`nav-link ${pathname === "/" ? "active" : ""}`}
+            >
               خانه
             </Link>
-            <Link href="/about" className={`nav-link ${pathname==='/about'?'active':''}`}>
+            <Link
+              href="/about"
+              className={`nav-link ${pathname === "/about" ? "active" : ""}`}
+            >
               درباره ما
             </Link>
-            <Link href="/blogs" className={`nav-link ${pathname==='/blogs'?'active':''}`}>
+            <Link
+              href="/blogs"
+              className={`nav-link ${pathname === "/blogs" ? "active" : ""}`}
+            >
               بلاگ‌ها
             </Link>
-            <Link href="/contact" className={`nav-link ${pathname==='/contact'?'active':''}`}>
+            <Link
+              href="/contact"
+              className={`nav-link ${pathname === "/contact" ? "active" : ""}`}
+            >
               تماس با ما
             </Link>
 
@@ -70,7 +82,7 @@ export default function Navbar({ isLoggedIn = false }: Props) {
               </button>
             </div>
 
-            {!context.isAuthenticated? (
+            {!context.isAuthenticated ? (
               <Link
                 href="/auth/login"
                 className="
@@ -83,16 +95,36 @@ export default function Navbar({ isLoggedIn = false }: Props) {
               >
                 ورود / ثبت‌نام
               </Link>
-            ):(
-              <button   onClick={()=>handleLogout()} className="    px-4 py-2
+            ) : (
+              <>
+                {context.user?.role == "admin" ? (
+                  <>
+                    <Link
+                    href={"/p-admin"}
+                      className="    px-4 py-2
     text-base md:text-lg
     rounded-md
     bg-blue-600 text-white
     hover:bg-blue-700 transition"
-  
-    >
-                خروج از حساب ({context.user?.username})
-              </button>
+                    >
+                      ورود به پنل ادمین({context.user?.username})
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleLogout()}
+                      className="    px-4 py-2
+    text-base md:text-lg
+    rounded-md
+    bg-blue-600 text-white
+    hover:bg-blue-700 transition"
+                    >
+                      خروج از حساب ({context.user?.username})
+                    </button>
+                  </>
+                )}
+              </>
             )}
           </div>
 
@@ -127,16 +159,32 @@ export default function Navbar({ isLoggedIn = false }: Props) {
             </button>
 
             <div className="flex flex-col gap-5">
-              <Link href="/" onClick={closeMenu} className={`mobile-link ${pathname==='/'?'active':''}`}>
+              <Link
+                href="/"
+                onClick={closeMenu}
+                className={`mobile-link ${pathname === "/" ? "active" : ""}`}
+              >
                 خانه
               </Link>
-              <Link href="/about" onClick={closeMenu} className={`mobile-link ${pathname==='/about'?'active':''}`}>
+              <Link
+                href="/about"
+                onClick={closeMenu}
+                className={`mobile-link ${pathname === "/about" ? "active" : ""}`}
+              >
                 درباره ما
               </Link>
-              <Link href="/blogs" onClick={closeMenu} className={`mobile-link ${pathname==='/blogs'?'active':''}`}>
+              <Link
+                href="/blogs"
+                onClick={closeMenu}
+                className={`mobile-link ${pathname === "/blogs" ? "active" : ""}`}
+              >
                 بلاگ‌ها
               </Link>
-              <Link href="/contact" onClick={closeMenu} className={`mobile-link ${pathname==='/contact'?'active':''}`}>
+              <Link
+                href="/contact"
+                onClick={closeMenu}
+                className={`mobile-link ${pathname === "/contact" ? "active" : ""}`}
+              >
                 تماس با ما
               </Link>
 
@@ -156,26 +204,50 @@ export default function Navbar({ isLoggedIn = false }: Props) {
                 </button>
               </div>
 
-              {!context.isAuthenticated? (
-                <Link
-                  href="/auth/login"
-                  onClick={closeMenu}
-
-                  className="
-                    block w-full text-center
-                    px-4 py-2
-                    text-sm
-                    rounded-md
-                    bg-blue-600 text-white
-                    hover:bg-blue-700 transition
-                  "
-                >
-                  ورود / ثبت‌نام
-
-                </Link>
-              ):(
-                <span className="text-gray-700">خوش آمدید، {context.user?.username}</span>
-              )}
+            {!context.isAuthenticated ? (
+              <Link
+                href="/auth/login"
+                className="
+    px-4 py-2
+    text-base md:text-lg
+    rounded-md
+    bg-blue-600 text-white
+    hover:bg-blue-700 transition
+  "
+              >
+                ورود / ثبت‌نام
+              </Link>
+            ) : (
+              <>
+                {context.user?.role == "admin" ? (
+                  <>
+                    <Link
+                    href={"/p-admin"}
+                      className="    px-4 py-2
+    text-base md:text-lg
+    rounded-md
+    bg-blue-600 text-white
+    hover:bg-blue-700 transition"
+                    >
+                      ورود به پنل ادمین({context.user?.username})
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleLogout()}
+                      className="    px-4 py-2
+    text-base md:text-lg
+    rounded-md
+    bg-blue-600 text-white
+    hover:bg-blue-700 transition"
+                    >
+                      خروج از حساب ({context.user?.username})
+                    </button>
+                  </>
+                )}
+              </>
+            )}
             </div>
           </div>
         </div>

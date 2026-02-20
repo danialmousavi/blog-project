@@ -43,14 +43,16 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex">
+      <AuthProvider>
       <Sidebar />
       <div className="flex-1 min-h-screen md:pr-64">
         <Navbar />
         <main className="pt-16 p-4">
-          <AuthProvider>{children}</AuthProvider>
+          {children}
           <ToastProvider />
         </main>
       </div>
+      </AuthProvider>
     </div>
   );
 }
