@@ -39,86 +39,145 @@ export default function ArticleTable({
   };
   return (
     <>
-      <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
-        <table className="w-full text-right">
-          <thead className="bg-blue-50">
-            <tr className="text-sm text-blue-700">
-              <th className="px-6 py-4 font-semibold">عنوان</th>
-              <th className="px-6 py-4 font-semibold">نویسنده</th>
-              <th className="px-6 py-4 font-semibold">دسته‌بندی</th>
-              <th className="px-6 py-4 font-semibold">زمان انتشار</th>
-              <th className="px-6 py-4 font-semibold text-center">عملیات</th>
-            </tr>
-          </thead>
+    <>
+  {/* ================= Desktop Table ================= */}
+  <div className="hidden md:block overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
+    <table className="w-full text-right">
+      <thead className="bg-blue-50">
+        <tr className="text-sm text-blue-700">
+          <th className="px-6 py-4 font-semibold">عنوان</th>
+          <th className="px-6 py-4 font-semibold">نویسنده</th>
+          <th className="px-6 py-4 font-semibold">دسته‌بندی</th>
+          <th className="px-6 py-4 font-semibold">زمان انتشار</th>
+          <th className="px-6 py-4 font-semibold text-center">عملیات</th>
+        </tr>
+      </thead>
 
-          <tbody>
-            {articles.map((article) => (
-              <tr
-                key={article.id}
-                className="text-sm transition hover:bg-blue-50/50"
-              >
-                {/* Title */}
-                <td className="px-6 py-4 font-medium text-gray-800">
-                  {article.title}
-                </td>
+      <tbody>
+        {articles.map((article) => (
+          <tr
+            key={article.id}
+            className="text-sm transition hover:bg-blue-50/50 border-b last:border-none"
+          >
+            <td className="px-6 py-4 font-medium text-gray-800">
+              {article.title}
+            </td>
 
-                {/* Author */}
-                <td className="px-6 py-4 text-gray-600">{article.author}</td>
+            <td className="px-6 py-4 text-gray-600">
+              {article.author}
+            </td>
 
-                {/* Category */}
-                <td className="px-6 py-4 text-gray-600">
-                  {categoryMap.get(article.categoryId) || "نامشخص"}
-                </td>
+            <td className="px-6 py-4 text-gray-600">
+              {categoryMap.get(article.categoryId) || "نامشخص"}
+            </td>
 
-                {/* Date */}
-                <td className="px-6 py-4 text-gray-600">
-                  {formatDate(article.createdAt)}
-                </td>
+            <td className="px-6 py-4 text-gray-600">
+              {formatDate(article.createdAt)}
+            </td>
 
-                {/* Actions */}
-                <td className="px-6 py-4">
-                  <div className="flex justify-center gap-3">
-                    <button
-                      onClick={() => setSelectedArticle(article)}
-                      className="rounded-lg p-2 text-blue-600 transition hover:bg-blue-100"
-                      title="مشاهده مقاله"
-                    >
-                      <FiEye size={18} />
-                    </button>
+            <td className="px-6 py-4">
+              <div className="flex justify-center gap-3">
+                <button
+                  onClick={() => setSelectedArticle(article)}
+                  className="rounded-lg p-2 text-blue-600 hover:bg-blue-100 transition"
+                >
+                  <FiEye size={18} />
+                </button>
 
-                    <button
-                      className="rounded-lg p-2 text-red-600 transition hover:bg-red-100"
-                      title="حذف مقاله"
-                      onClick={() => handleDeleteArticle(article.id)}
-                    >
-                      <FiTrash2 size={18} />
-                    </button>
-                    <Link
-                      href={`/p-admin/articles/edit/${article.id}`}
-                      className="rounded-lg p-2 text-green-600 transition hover:bg-red-100"
-                      title="ادیت مقاله"
-                    >
-                      <FiEdit size={18} />
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                <button
+                  onClick={() => handleDeleteArticle(article.id)}
+                  className="rounded-lg p-2 text-red-600 hover:bg-red-100 transition"
+                >
+                  <FiTrash2 size={18} />
+                </button>
+
+                <Link
+                  href={`/p-admin/articles/edit/${article.id}`}
+                  className="rounded-lg p-2 text-green-600 hover:bg-green-100 transition"
+                >
+                  <FiEdit size={18} />
+                </Link>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {/* ================= Mobile Cards ================= */}
+  <div className="space-y-4 md:hidden">
+    {articles.map((article) => (
+      <div
+        key={article.id}
+        className="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"
+      >
+        <div className="space-y-2 text-sm">
+          <div>
+            <p className="text-gray-400 text-xs">عنوان</p>
+            <p className="font-medium text-gray-800 break-words">
+              {article.title}
+            </p>
+          </div>
+
+          <div className="flex justify-between">
+            <div>
+              <p className="text-gray-400 text-xs">نویسنده</p>
+              <p>{article.author}</p>
+            </div>
+
+            <div className="text-left">
+              <p className="text-gray-400 text-xs">تاریخ</p>
+              <p>{formatDate(article.createdAt)}</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-gray-400 text-xs">دسته‌بندی</p>
+            <p>
+              {categoryMap.get(article.categoryId) || "نامشخص"}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 flex justify-end gap-3">
+          <button
+            onClick={() => setSelectedArticle(article)}
+            className="rounded-lg p-2 text-blue-600 hover:bg-blue-100 transition"
+          >
+            <FiEye size={18} />
+          </button>
+
+          <button
+            onClick={() => handleDeleteArticle(article.id)}
+            className="rounded-lg p-2 text-red-600 hover:bg-red-100 transition"
+          >
+            <FiTrash2 size={18} />
+          </button>
+
+          <Link
+            href={`/p-admin/articles/edit/${article.id}`}
+            className="rounded-lg p-2 text-green-600 hover:bg-green-100 transition"
+          >
+            <FiEdit size={18} />
+          </Link>
+        </div>
       </div>
+    ))}
+  </div>
 
-      {/* Modal */}
-      <ArticleModal
-        isOpen={!!selectedArticle}
-        onClose={() => setSelectedArticle(null)}
-        article={selectedArticle}
-        categoryTitle={
-          selectedArticle
-            ? categoryMap.get(selectedArticle.categoryId)
-            : undefined
-        }
-      />
+  {/* Modal */}
+  <ArticleModal
+    isOpen={!!selectedArticle}
+    onClose={() => setSelectedArticle(null)}
+    article={selectedArticle}
+    categoryTitle={
+      selectedArticle
+        ? categoryMap.get(selectedArticle.categoryId)
+        : undefined
+    }
+  />
+</>
     </>
   );
 }
