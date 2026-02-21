@@ -26,10 +26,11 @@ export default function CommentModal({
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl animate-fadeIn">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="w-full max-w-lg max-h-[90vh] overflow-hidden rounded-2xl bg-white shadow-xl flex flex-col">
+          
           {/* Header */}
-          <div className="flex items-center justify-between border-b px-6 py-4">
+          <div className="flex items-center justify-between border-b px-5 py-4">
             <h3 className="font-bold text-gray-800">متن کامنت</h3>
             <button
               onClick={onClose}
@@ -39,19 +40,22 @@ export default function CommentModal({
             </button>
           </div>
 
-          {/* Content */}
-          <div className="px-6 py-5 space-y-3">
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
             <p className="text-sm text-gray-500">
-              نویسنده: <span className="font-medium text-gray-800">{author}</span>
+              نویسنده:{" "}
+              <span className="font-medium text-gray-800">
+                {author}
+              </span>
             </p>
 
-            <div className="rounded-xl bg-gray-50 p-4 text-gray-700 leading-relaxed">
+            <div className="rounded-xl bg-gray-50 p-4 text-gray-700 leading-relaxed break-words">
               {content}
             </div>
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end border-t px-6 py-4">
+          <div className="border-t px-5 py-4 flex justify-end">
             <button
               onClick={onClose}
               className="rounded-xl bg-blue-600 px-5 py-2 text-white hover:bg-blue-700 transition"

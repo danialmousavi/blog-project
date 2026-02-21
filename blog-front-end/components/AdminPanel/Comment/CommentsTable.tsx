@@ -14,7 +14,10 @@ type CommentsTableProps = {
   articles: ArticleType[];
 };
 
-export default function CommentsTable({comments,articles,}: CommentsTableProps) {
+export default function CommentsTable({
+  comments,
+  articles,
+}: CommentsTableProps) {
   const [selectedComment, setSelectedComment] =
     useState<Articlecomment | null>(null);
 
@@ -23,17 +26,18 @@ export default function CommentsTable({comments,articles,}: CommentsTableProps) 
       articles.map((article) => [article.id, article.title])
     );
   }, [articles]);
-  const handleDeleteComment=async(id:string)=>{
-    const result=await DeleteComment(id);
-    if(result.message){
-      toast.success(result.message)
-    }else{
-      toast.error(result.message)
-    }
-  }
+
+  const handleDeleteComment = async (id: string) => {
+    const result = await DeleteComment(id);
+    result.message
+      ? toast.success(result.message)
+      : toast.error(result.message);
+  };
+
   return (
     <>
-      <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
+      {/* ================= Desktop Table ================= */}
+      <div className="hidden md:block overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
         <table className="w-full text-right">
           <thead className="bg-blue-50">
             <tr className="text-sm text-blue-700">
@@ -41,9 +45,7 @@ export default function CommentsTable({comments,articles,}: CommentsTableProps) 
               <th className="px-6 py-4 font-semibold">نویسنده</th>
               <th className="px-6 py-4 font-semibold">محتوا</th>
               <th className="px-6 py-4 font-semibold">تاریخ</th>
-              <th className="px-6 py-4 font-semibold text-center">
-                عملیات
-              </th>
+              <th className="px-6 py-4 font-semibold text-center">عملیات</th>
             </tr>
           </thead>
 
@@ -51,7 +53,7 @@ export default function CommentsTable({comments,articles,}: CommentsTableProps) 
             {comments.map((comment) => (
               <tr
                 key={comment.id}
-                className="text-sm transition hover:bg-blue-50/50"
+                className="text-sm transition hover:bg-blue-50/50 border-b border-blue-50 last:border-b-0"
               >
                 <td className="px-6 py-4 font-medium text-gray-800">
                   {articleMap.get(comment.articleId) ?? "نامشخص"}
@@ -64,7 +66,7 @@ export default function CommentsTable({comments,articles,}: CommentsTableProps) 
                 <td className="px-6 py-4">
                   <button
                     onClick={() => setSelectedComment(comment)}
-                    className="rounded-xl bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+                    className="rounded-xl bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
                   >
                     مشاهده کامنت
                   </button>
@@ -74,12 +76,13 @@ export default function CommentsTable({comments,articles,}: CommentsTableProps) 
                   {formatDate(comment.createdAt)}
                 </td>
 
-                <td className="px-6 py-4">
-                  <div className="flex justify-center gap-3">
-                    <button className="rounded-lg p-2 text-red-600 transition hover:bg-red-100" onClick={()=>handleDeleteComment(comment.id)}>
-                      <FiTrash2 size={18} />
-                    </button>
-                  </div>
+                <td className="px-6 py-4 text-center">
+                  <button
+                    className="rounded-lg p-2 text-red-600 hover:bg-red-100 transition"
+                    onClick={() => handleDeleteComment(comment.id)}
+                  >
+                    <FiTrash2 size={18} />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -87,7 +90,51 @@ export default function CommentsTable({comments,articles,}: CommentsTableProps) 
         </table>
       </div>
 
-      {/* Modal */}
+      {/* ================= Mobile Cards ================= */}
+      <div className="space-y-4 md:hidden">
+        {comments.map((comment) => (
+          <div
+            key={comment.id}
+            className="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"
+          >
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">مقاله:</span>
+                <span className="font-medium">
+                  {articleMap.get(comment.articleId) ?? "نامشخص"}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-500">نویسنده:</span>
+                <span>{comment.author}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-500">تاریخ:</span>
+                <span>{formatDate(comment.createdAt)}</span>
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-between items-center">
+              <button
+                onClick={() => setSelectedComment(comment)}
+                className="rounded-xl bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 transition"
+              >
+                مشاهده
+              </button>
+
+              <button
+                className="rounded-lg p-2 text-red-600 hover:bg-red-100 transition"
+                onClick={() => handleDeleteComment(comment.id)}
+              >
+                <FiTrash2 size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <CommentModal
         isOpen={!!selectedComment}
         onClose={() => setSelectedComment(null)}
