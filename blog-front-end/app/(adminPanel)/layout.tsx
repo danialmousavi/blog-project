@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import Navbar from "@/components/AdminPanel/AdminNavbar/AdminNavbar";
 import Sidebar from "@/components/AdminPanel/Sidebar/Sidebar";
-import ToastProvider from "@/components/modules/providers/ToastProvider";
+
 import { AuthProvider } from "@/context/AuthContext";
 
 export const dynamic = "force-dynamic"; // مهم 👈
@@ -49,7 +49,6 @@ export default async function DashboardLayout({
         <Navbar />
         <main className="pt-16 p-4">
           {children}
-          <ToastProvider />
         </main>
       </div>
       </AuthProvider>

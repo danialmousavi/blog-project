@@ -9,13 +9,13 @@ export default function ToastProvider() {
       position="bottom-right"
       autoClose={3000}
       hideProgressBar={true}
-      newestOnTop
+      newestOnTop={false}
       closeOnClick
       rtl
+      pauseOnFocusLoss={false}
       pauseOnHover
       draggable
       theme="colored"
-      
     />
   );
 }

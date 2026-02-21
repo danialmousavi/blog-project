@@ -1,6 +1,7 @@
 "use server";
 
 import { loginType, registerType } from "@/types/Auth";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export const AuthRegister = async (values: registerType) => {
@@ -24,7 +25,7 @@ export const AuthRegister = async (values: registerType) => {
         message: "ثبت‌نام ناموفق بود",
       };
     }
-
+    revalidatePath("/p-admin/users")
     // ✅ موفق
     return {
       success: true,
